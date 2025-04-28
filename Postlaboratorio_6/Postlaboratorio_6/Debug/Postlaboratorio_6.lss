@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000060  00000000  00000000  000004dc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000a38  00000000  00000000  0000053c  2**0
+  6 .debug_info   00000a25  00000000  00000000  0000053c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000007a7  00000000  00000000  00000f74  2**0
+  7 .debug_abbrev 000007a7  00000000  00000000  00000f61  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000422  00000000  00000000  0000171b  2**0
+  8 .debug_line   00000422  00000000  00000000  00001708  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000118  00000000  00000000  00001b40  2**2
+  9 .debug_frame  00000118  00000000  00000000  00001b2c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000422  00000000  00000000  00001c58  2**0
+ 10 .debug_str    00000422  00000000  00000000  00001c44  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000001de  00000000  00000000  0000207a  2**0
+ 11 .debug_loc    000001de  00000000  00000000  00002066  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000050  00000000  00000000  00002258  2**0
+ 12 .debug_ranges 00000050  00000000  00000000  00002244  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -367,12 +367,13 @@ int main(void)
 			waiting_for_led_char=1; //Activar bandera de espera
  1e2:	81 e0       	ldi	r24, 0x01	; 1
  1e4:	80 93 8a 01 	sts	0x018A, r24	; 0x80018a <__data_end>
-			caracter=0;
- 1e8:	10 92 91 01 	sts	0x0191, r1	; 0x800191 <caracter>
+			
 			while(waiting_for_led_char){}
- 1ec:	80 91 8a 01 	lds	r24, 0x018A	; 0x80018a <__data_end>
- 1f0:	81 11       	cpse	r24, r1
- 1f2:	fc cf       	rjmp	.-8      	; 0x1ec <main+0x74>
+ 1e8:	80 91 8a 01 	lds	r24, 0x018A	; 0x80018a <__data_end>
+ 1ec:	81 11       	cpse	r24, r1
+ 1ee:	fc cf       	rjmp	.-8      	; 0x1e8 <main+0x70>
+			caracter=0;
+ 1f0:	10 92 91 01 	sts	0x0191, r1	; 0x800191 <caracter>
 			menu_option=0;
  1f4:	10 92 8b 01 	sts	0x018B, r1	; 0x80018b <menu_option>
  1f8:	c6 cf       	rjmp	.-116    	; 0x186 <main+0xe>
@@ -416,10 +417,9 @@ ISR(USART_RX_vect){
  232:	8f e6       	ldi	r24, 0x6F	; 111
  234:	91 e0       	ldi	r25, 0x01	; 1
  236:	0e 94 9c 00 	call	0x138	; 0x138 <writeString>
-		writeString(valorStr);
- 23a:	8d e8       	ldi	r24, 0x8D	; 141
- 23c:	91 e0       	ldi	r25, 0x01	; 1
- 23e:	0e 94 9c 00 	call	0x138	; 0x138 <writeString>
+		WriteChar(caracter);
+ 23a:	80 91 91 01 	lds	r24, 0x0191	; 0x800191 <caracter>
+ 23e:	0e 94 95 00 	call	0x12a	; 0x12a <WriteChar>
 		writeString("\n\r");
  242:	88 e1       	ldi	r24, 0x18	; 24
  244:	91 e0       	ldi	r25, 0x01	; 1

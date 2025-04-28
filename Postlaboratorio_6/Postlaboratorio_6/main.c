@@ -19,7 +19,7 @@ void writeString (char* texto);
 volatile uint8_t  valor_ADC=0;
 volatile char caracter;
 volatile uint8_t menu_option=0;
-volatile uint8_t waiting_for_led_char = 0;  // Nueva bandera para esperar entrada LED
+volatile uint8_t waiting_for_led_char = 0;  // bandera para esperar entrada LED
 char valorStr[4];  // Para almacenar el valor convertido a string
 
 
@@ -49,8 +49,9 @@ int main(void)
 		else if (caracter == '2') {
 			writeString("ingrese el carácter");
 			waiting_for_led_char=1; //Activar bandera de espera
-			caracter=0;
+			
 			while(waiting_for_led_char){}
+			caracter=0;
 			menu_option=0;
 			}
 		}
@@ -136,7 +137,7 @@ ISR(USART_RX_vect){
 	if (waiting_for_led_char){
 		PORTB= caracter;
 		writeString("\n\rLEDs actualizados con: ");
-		writeString(valorStr);
+		WriteChar(caracter);
 		writeString("\n\r");
 		waiting_for_led_char = 0;  // Desactivar bandera
 	}
